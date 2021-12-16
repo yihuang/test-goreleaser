@@ -1,3 +1,6 @@
+PACKAGE_NAME:=github.com/yihuang/test-goreleaser
+GOLANG_CROSS_VERSION  = v1.17.1
+
 release:
 	@if [ ! -f ".release-env" ]; then \
 		echo "\033[91m.release-env is required for release\033[0m";\
