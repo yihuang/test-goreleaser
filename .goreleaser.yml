@@ -1,0 +1,43 @@
+before:
+  hooks:
+  - go mod download
+
+builds:
+  - id: "test-darwin"
+    main: ./cmd/test
+    binary: bin/test
+    env:
+      - CGO_ENABLED=1
+      - CC=o64-clang
+      - CXX=o64-clang++
+    goos:
+      - darwin
+    goarch:
+      - amd64
+
+archives:
+- name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+  replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    amd64: x86_64
+  format_overrides:
+    - goos: windows
+      format: zip
+  builds:
+  - test-darwin
+
+checksum:
+  name_template: 'checksums.txt'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+release:
+  draft: true
